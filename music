@@ -45,7 +45,6 @@
     container.className = 'player-container';
     container.id = 'player';
 
-    // Generamos cada elemento de la interfaz por separado para no disparar alertas de etiquetas
     container.innerHTML = [
         '<div class="album-art" id="art">📺</div>',
         '<div class="track-title" id="title">Estación YouTube MP3</div>',
@@ -67,7 +66,7 @@
         '</div>'
     ].join('');
 
-    document.body.innerHTML = ''; // Limpieza controlada
+    document.body.innerHTML = ''; 
     document.body.appendChild(container);
 
     const audio = document.createElement('audio');
@@ -95,11 +94,12 @@
         const url = ytUrlInput.value.trim();
         if (!url) return;
         
-        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+        // Expresión regular corregida para capturar de forma segura la ID de YouTube
+        const regExp = /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/|shorts\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/;
         const match = url.match(regExp);
         
-        if (match && match[2].length === 11) {
-            const videoId = match[2];
+        if (match && match[1].length === 11) {
+            const videoId = match[1];
             artist.innerText = "Procesando pista de YouTube...";
             const audioLink = "https://vexdh.com" + videoId; 
             playlist.push({ name: "YouTube Track (" + videoId + ")", url: audioLink });
